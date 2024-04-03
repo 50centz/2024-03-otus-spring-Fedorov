@@ -34,17 +34,25 @@ public class CsvQuestionDao implements QuestionDao {
     }
 
     private List<QuestionDto> getQuestionDto() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream(fileNameProvider.getTestFileName());
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
+        InputStream inputStream = getInputStream();
+        return getListQuestionDto(inputStream);
+    }
 
+
+    private InputStream getInputStream() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileNameProvider.getTestFileName());
+        return inputStream;
+    }
+
+    private List<QuestionDto> getListQuestionDto(InputStream inputStream) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
             return new CsvToBeanBuilder<QuestionDto>(inputStreamReader)
                     .withType(QuestionDto.class)
                     .withSkipLines(1)
                     .withSeparator(';')
                     .build()
                     .parse();
-
         } catch (IOException e) {
             throw new QuestionReadException("Filed to read file", e);
         }
