@@ -20,18 +20,21 @@ public class TestServiceImpl implements TestService {
         ioService.printFormattedLine("Please answer the questions below%n");
         // Получить вопросы из дао и вывести их с вариантами ответов
 
+        int option = 1;
         try {
             List<Question> questionList = questionDao.findAll();
             for (Question question : questionList) {
                 ioService.printFormattedLine(question.text());
                 for (Answer answer : question.answers()) {
-                    System.out.println(answer.text());
-                    System.out.println(answer.isCorrect());
+                    ioService.printLine(option + " Option." + " " + answer.text());
+                    ioService.printLine(String.valueOf(answer.isCorrect()));
+                    ++option;
                 }
-                System.out.println("\n\n");
+                option = 1;
+                ioService.printLine("");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            ioService.printLine(e.getMessage());
         }
     }
 }
