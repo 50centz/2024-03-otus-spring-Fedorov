@@ -8,7 +8,6 @@ import ru.otus.hw.domain.Question;
 import ru.otus.hw.domain.Student;
 import ru.otus.hw.domain.TestResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,13 +33,13 @@ public class TestServiceImpl implements TestService {
         return testResult;
     }
 
-    private boolean getAnswer(Question question){
+    private boolean getAnswer(Question question) {
 
         int optional = 1;
 
         ioService.printLine(question.text() + "\n");
 
-        for (Answer answer : question.answers()){
+        for (Answer answer : question.answers()) {
             ioService.printLine(optional + " Optional. " + answer.text() + "\n");
             ++optional;
         }
@@ -53,7 +52,7 @@ public class TestServiceImpl implements TestService {
         return answer;
     }
 
-    private boolean getAnswerOption(List<Answer> listAnswers){
+    private boolean getAnswerOption(List<Answer> listAnswers) {
         String message = "Enter the response number\n";
         String errorMessage = "Entered is not correct number !!!";
         int numberAnswer = ioService.readIntForRangeWithPrompt(1, listAnswers.size() + 1, message,
@@ -62,7 +61,7 @@ public class TestServiceImpl implements TestService {
         return getBooleanAnswer(listAnswers, numberAnswer);
     }
 
-    private boolean getBooleanAnswer(List<Answer> answerList, int numberAnswer){
+    private boolean getBooleanAnswer(List<Answer> answerList, int numberAnswer) {
         Answer answer = answerList.get(numberAnswer - 1);
         return answer.isCorrect();
     }
