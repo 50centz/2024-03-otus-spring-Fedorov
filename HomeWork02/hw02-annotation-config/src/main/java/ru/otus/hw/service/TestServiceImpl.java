@@ -55,7 +55,7 @@ public class TestServiceImpl implements TestService {
     private boolean getAnswerOption(List<Answer> listAnswers) {
         String message = "Enter the response number\n";
         String errorMessage = "Entered is not correct number !!!";
-        int numberAnswer = ioService.readIntForRangeWithPrompt(1, listAnswers.size() + 1, message,
+        int numberAnswer = ioService.readIntForRangeWithPrompt(1, listAnswers.size(), message,
                 errorMessage);
 
         return getBooleanAnswer(listAnswers, numberAnswer);
