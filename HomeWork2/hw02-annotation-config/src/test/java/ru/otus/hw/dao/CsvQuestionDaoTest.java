@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.otus.hw.config.AppProperties;
 import ru.otus.hw.config.TestFileNameProvider;
+import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
@@ -31,5 +32,4 @@ class CsvQuestionDaoTest {
 
         assertNotNull(questions);
     }
-  
 }
