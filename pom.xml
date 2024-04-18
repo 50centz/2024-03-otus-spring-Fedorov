@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>HomeWork1/hw01-xml-config</module>
-        <module>HomeWork2/hw02-annotation-config</module>
+        <module>hw01-xml-config</module>
+        <module>hw02-annotation-config</module>
     </modules>
 </project>
