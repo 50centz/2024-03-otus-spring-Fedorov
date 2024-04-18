@@ -12,5 +12,6 @@
 
     <modules>
         <module>HomeWork01/hw01-xml-config</module>
+        <module>HomeWork02/hw02-annotation-config</module>
     </modules>
 </project>
