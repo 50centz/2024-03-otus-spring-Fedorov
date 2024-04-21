@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.otus.hw.config.AppProperties;
 import ru.otus.hw.config.TestFileNameProvider;
+import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
@@ -30,6 +31,44 @@ class CsvQuestionDaoTest {
         List<Question> questions = csvQuestionDao.findAll();
 
         assertNotNull(questions);
+    }
+
+    @DisplayName("CsvQuestionDao : Method(findAll) size List")
+    @Test
+    void shouldHaveCreateListSizeThreeWithMethod() {
+
+        CsvQuestionDao csvQuestionDao = new CsvQuestionDao(testFileNameProvider);
+
+        List<Question> questions = csvQuestionDao.findAll();
+        Question question = questions.get(0);
+        Answer answers = question.answers().get(0);
+        System.out.println(answers.text());
+
+        assertEquals(3, questions.size());
+    }
+
+
+    @DisplayName("CsvQuestionDao : Method(findAll) check answers")
+    @Test
+    void shouldHaveCheckFirstAnswerWithMethod() {
+
+        CsvQuestionDao csvQuestionDao = new CsvQuestionDao(testFileNameProvider);
+
+        List<Question> questions = csvQuestionDao.findAll();
+        Question question = questions.get(0);
+
+
+        assertAll("question",
+                () -> assertEquals("Is there life on Mars?", question.text()),
+                () -> assertEquals(3, question.answers().size()),
+                () -> assertEquals("Science doesn't know this yet", question.answers().get(0).text()),
+                () -> assertTrue(question.answers().get(0).isCorrect()),
+                () -> assertEquals("Certainly. The red UFO is from Mars. And green is from Venus",
+                        question.answers().get(1).text()),
+                () -> assertFalse(question.answers().get(1).isCorrect()),
+                () -> assertEquals("Absolutely not", question.answers().get(2).text()),
+                () -> assertFalse(question.answers().get(2).isCorrect()));
+
     }
 
 }
