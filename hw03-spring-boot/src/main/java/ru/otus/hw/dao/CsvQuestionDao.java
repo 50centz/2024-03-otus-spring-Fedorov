@@ -11,7 +11,6 @@ import ru.otus.hw.exceptions.QuestionReadException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,9 +26,7 @@ public class CsvQuestionDao implements QuestionDao {
         // Про ресурсы: https://mkyong.com/java/java-read-a-file-from-resources-folder/
 
         List<QuestionDto> questionDtoList = getQuestionDto();
-        List<Question> questionList = new ArrayList<>();
-        questionList = questionDtoList.stream().map(QuestionDto::toDomainObject).toList();
-        return questionList;
+        return questionDtoList.stream().map(QuestionDto::toDomainObject).toList();
     }
 
     private List<QuestionDto> getQuestionDto() {
