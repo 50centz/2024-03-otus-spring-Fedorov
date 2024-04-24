@@ -55,10 +55,10 @@ public class TestServiceImpl implements TestService {
     }
 
     private boolean getAnswerOption(List<Answer> listAnswers) {
-        String message = ioService.getMessage("TestService.answer.option");
-        String errorMessage = ioService.getMessage("TestService.answer.error.message");
-        int numberAnswer = ioService.readIntForRangeWithPrompt(1, listAnswers.size(), message,
-                errorMessage);
+        
+        int numberAnswer = ioService.readIntForRangeWithPromptLocalized(1, listAnswers.size(),
+                "TestService.answer.option",
+                "TestService.answer.error.message");
 
         return getBooleanAnswer(listAnswers, numberAnswer);
     }
