@@ -1,4 +1,4 @@
-create table authors (
+create table if not exists authors (
     id bigserial,
     full_name varchar(255),
     primary key (id)

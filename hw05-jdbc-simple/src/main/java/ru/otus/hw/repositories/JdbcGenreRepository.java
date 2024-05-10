@@ -33,8 +33,15 @@ public class JdbcGenreRepository implements GenreRepository {
 
         Map<String, Object> params = Collections.singletonMap("id", id);
 
-        return Optional.ofNullable(namedParameterJdbcOperations.queryForObject("SELECT id, name FROM genres " +
-                "where id = :id", params, new GnreRowMapper()));
+        List<Genre> genres = namedParameterJdbcOperations.query("SELECT id, name FROM genres " +
+                "where id = :id", params, new GnreRowMapper());
+
+
+        if (genres.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(genres.get(0));
     }
 
     private static class GnreRowMapper implements RowMapper<Genre> {

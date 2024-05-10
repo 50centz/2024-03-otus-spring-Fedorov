@@ -1,6 +1,5 @@
 package ru.otus.hw.repositories;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -33,20 +32,18 @@ public class JdbcBookRepository implements BookRepository {
 
         Map<String, Object> params = Collections.singletonMap("id", id);
 
-        try {
-            return Optional.ofNullable(namedParameterJdbcOperations.queryForObject(
-                    "SELECT books.id, books.title, " +
-                            "books.author_id, authors.full_name, " +
-                            "books.genre_id, genres.name FROM books " +
-                            "INNER JOIN authors ON books.author_id=authors.id " +
-                            "INNER JOIN genres ON books.genre_id=genres.id " +
-                            "WHERE books.id = :id",
-                    params,
-                    new BookRowMapper()));
+        List<Book> books =  namedParameterJdbcOperations.query("SELECT books.id, books.title, " +
+                "books.author_id, authors.full_name, " +
+                "books.genre_id, genres.name FROM books " +
+                "INNER JOIN authors ON books.author_id=authors.id " +
+                "INNER JOIN genres ON books.genre_id=genres.id " +
+                "WHERE books.id = :id", params, new BookRowMapper());
 
-        } catch (EmptyResultDataAccessException e) {
+        if (books.isEmpty()) {
             return Optional.empty();
         }
+
+        return Optional.of(books.get(0));
     }
 
     @Override
@@ -101,17 +98,18 @@ public class JdbcBookRepository implements BookRepository {
         params.addValue("author_id", book.getAuthor().getId());
         params.addValue("genre_id", book.getGenre().getId());
 
-        Optional<Book> checkBook = findById(book.getId());
 
         // Выбросить EntityNotFoundException если не обновлено ни одной записи в БД
 
-        if (checkBook.isEmpty()) {
+
+
+        int number = namedParameterJdbcOperations.update("UPDATE books SET title = :title, author_id = :author_id, " +
+                "genre_id = :genre_id WHERE id = :id", params);
+
+        if (number == 0) {
             throw  new EntityNotFoundException(String.format("The book with this id: %s was not found",
                     book.getId()));
         }
-
-        namedParameterJdbcOperations.update("UPDATE books SET title = :title, author_id = :author_id, " +
-                "genre_id = :genre_id WHERE id = :id", params);
 
         return book;
     }
