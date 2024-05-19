@@ -57,6 +57,5 @@ public class JpaBookRepository implements BookRepository {
         Book book = entityManager.find(Book.class, id);
 
         entityManager.remove(book);
-
     }
 }
