@@ -7,6 +7,9 @@ spring:
     hibernate:
       ddl-auto: none
 
+  shell:
+    interactive:
+      enabled: false
 
   sql:
     init:
