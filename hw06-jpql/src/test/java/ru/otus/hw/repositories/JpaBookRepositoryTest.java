@@ -74,7 +74,7 @@ class JpaBookRepositoryTest {
 
     private static List<Book> getDbBooks(List<Author> dbAuthors, List<Genre> dbGenres) {
         return IntStream.range(1, 4).boxed()
-                .map(id -> new Book(id, "BookTitle_" + id, dbAuthors.get(id - 1), dbGenres.get(id - 1)))
+                .map(id -> new Book(id.longValue(), "BookTitle_" + id, dbAuthors.get(id - 1), dbGenres.get(id - 1)))
                 .toList();
     }
 

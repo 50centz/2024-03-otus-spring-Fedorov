@@ -21,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public Genre insert(String name) {
+    public Genre create(String name) {
         return save(0, name);
     }
 

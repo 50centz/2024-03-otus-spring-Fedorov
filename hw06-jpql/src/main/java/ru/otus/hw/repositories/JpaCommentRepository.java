@@ -45,24 +45,20 @@ public class JpaCommentRepository implements CommentRepository {
         return entityManager.merge(comment);
     }
 
-    @Override
-    public void updateCommentById(long id, String comment) {
 
-        Query query = entityManager.createQuery("update Comment c set c.comment = :comment where c.id = :id");
-
-        query.setParameter("comment", comment);
-        query.setParameter("id", id);
-
-        query.executeUpdate();
-
-    }
 
     @Override
     public void deleteCommentBuId(long id) {
-
         Comment comment = entityManager.find(Comment.class, id);
 
         entityManager.remove(comment);
+    }
 
+
+    @Override
+    public void deleteAllCommentByBookId(long id) {
+        Query query = entityManager.createQuery("delete from Comment c where c.book.id = :id");
+
+        query.setParameter("id", id).executeUpdate();
     }
 }

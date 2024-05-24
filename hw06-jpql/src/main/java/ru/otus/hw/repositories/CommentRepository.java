@@ -12,7 +12,8 @@ public interface CommentRepository {
 
     Comment save(Comment comment);
 
-    void updateCommentById(long id, String comment);
 
     void deleteCommentBuId(long id);
+
+    void deleteAllCommentByBookId(long id);
 }

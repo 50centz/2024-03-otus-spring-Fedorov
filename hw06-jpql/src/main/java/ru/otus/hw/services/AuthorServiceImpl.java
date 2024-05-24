@@ -21,7 +21,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public Author insert(String fullName) {
+    public Author create(String fullName) {
         return save(0, fullName);
     }
 

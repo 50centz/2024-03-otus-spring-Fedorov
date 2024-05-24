@@ -43,7 +43,7 @@ public class JpaBookRepository implements BookRepository {
 
     @Override
     public Book save(Book book) {
-        if (book.getId() == 0) {
+        if (book.getId() == null) {
             entityManager.persist(book);
             return book;
         }
@@ -56,6 +56,8 @@ public class JpaBookRepository implements BookRepository {
 
         Book book = entityManager.find(Book.class, id);
 
-        entityManager.remove(book);
+        if (book != null) {
+            entityManager.remove(book);
+        }
     }
 }

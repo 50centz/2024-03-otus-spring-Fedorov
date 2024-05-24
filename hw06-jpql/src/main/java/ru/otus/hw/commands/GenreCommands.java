@@ -28,7 +28,7 @@ public class GenreCommands {
     @ShellMethod(value = "Insert genre", key = "ig")
     public String insertGenre(String name) {
 
-        Genre saveGenre = genreService.insert(name);
+        Genre saveGenre = genreService.create(name);
 
         return genreConverter.genreToString(saveGenre);
     }

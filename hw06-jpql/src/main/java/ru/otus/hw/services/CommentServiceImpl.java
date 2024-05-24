@@ -33,20 +33,33 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Comment insert(String comment, long bookId) {
+    public Comment create(String comment, long bookId) {
         return save(0, comment, bookId);
     }
 
     @Transactional
     @Override
     public void updateCommentById(long id, String comment) {
-        commentRepository.updateCommentById(id, comment);
+        Optional<Comment> oldComment = commentRepository.findById(id);
+
+        if (oldComment.isPresent()) {
+            Comment newComment = oldComment.get();
+            newComment.setComment(comment);
+            commentRepository.save(newComment);
+        }
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
         commentRepository.deleteCommentBuId(id);
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteAllCommentByBookId(long id) {
+        commentRepository.deleteAllCommentByBookId(id);
     }
 
 

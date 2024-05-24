@@ -7,5 +7,5 @@ import java.util.List;
 public interface GenreService {
     List<Genre> findAll();
 
-    Genre insert(String name);
+    Genre create(String name);
 }

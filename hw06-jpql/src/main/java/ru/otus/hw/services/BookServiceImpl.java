@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book insert(String title, long authorId, long genreId) {
+    public Book create(String title, long authorId, long genreId) {
 
         return save(0, title, authorId, genreId);
     }
@@ -47,7 +47,19 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book update(long id, String title, long authorId, long genreId) {
-        return save(id, title, authorId, genreId);
+
+        Optional<Book> book = bookRepository.findById(id);
+
+        Book newBook = save(id, title, authorId, genreId);
+
+        if (book.isPresent()) {
+            bookRepository.save(newBook);
+            return newBook;
+        }
+
+        newBook.setId(null);
+
+        return newBook;
     }
 
     @Transactional

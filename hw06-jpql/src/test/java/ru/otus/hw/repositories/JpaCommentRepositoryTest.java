@@ -56,7 +56,7 @@ class JpaCommentRepositoryTest {
     private Comment getComment() {
         Author author = new Author(1, "Author_1");
         Genre genre = new Genre(1, "Genre_1");
-        Book book = new Book(1, "BookTitle_1", author, genre);
+        Book book = new Book(1L, "BookTitle_1", author, genre);
 
         return new Comment(1, "Comment_1", book);
     }
@@ -64,7 +64,7 @@ class JpaCommentRepositoryTest {
     private Comment saveNewComment() {
         Author author = new Author(1, "Author_1");
         Genre genre = new Genre(1, "Genre_1");
-        Book book = new Book(1, "BookTitle_1", author, genre);
+        Book book = new Book(1L, "BookTitle_1", author, genre);
 
         return jpaCommentRepository.save(new Comment(0, "Comment_4", book));
     }

@@ -11,10 +11,12 @@ public interface CommentService {
 
     Optional<Comment> findById(long id);
 
-    Comment insert(String comment, long bookId);
+    Comment create(String comment, long bookId);
 
     void updateCommentById(long id, String comment);
 
     void deleteById(long id);
+
+    void deleteAllCommentByBookId(long id);
 
 }
