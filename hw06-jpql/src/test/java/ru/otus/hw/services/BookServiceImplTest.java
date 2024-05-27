@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@Transactional(propagation = Propagation.NEVER)
 class BookServiceImplTest {
 
     @Autowired
@@ -59,14 +62,10 @@ class BookServiceImplTest {
         if (actualBook.isPresent()) {
             Book book = actualBook.get();
 
-            assertAll("book",
-                    () -> assertEquals(book.getId(), expectedBook.getId()),
-                    () -> assertEquals(book.getTitle(), expectedBook.getTitle()),
-                    () -> assertEquals(book.getAuthor().getId(), expectedBook.getAuthor().getId()),
-                    () -> assertEquals(book.getAuthor().getFullName(), expectedBook.getAuthor().getFullName()),
-                    () -> assertEquals(book.getGenre().getId(), expectedBook.getGenre().getId()),
-                    () -> assertEquals(book.getGenre().getName(), expectedBook.getGenre().getName()));
+            assertThat(book)
+                    .usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(expectedBook);
         }
+
     }
 
 

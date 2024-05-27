@@ -40,13 +40,12 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void updateCommentById(long id, String comment) {
-        Optional<Comment> oldComment = commentRepository.findById(id);
+        Comment oldComment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
+                "Comment with id %d not found".formatted(id)
+        ));
 
-        if (oldComment.isPresent()) {
-            Comment newComment = oldComment.get();
-            newComment.setComment(comment);
-            commentRepository.save(newComment);
-        }
+        oldComment.setComment(comment);
+        commentRepository.save(oldComment);
     }
 
     @Transactional

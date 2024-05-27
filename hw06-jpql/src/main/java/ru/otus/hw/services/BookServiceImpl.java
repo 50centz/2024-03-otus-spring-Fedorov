@@ -41,25 +41,25 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book create(String title, long authorId, long genreId) {
 
-        return save(0, title, authorId, genreId);
+        var author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(authorId)));
+        var genre = genreRepository.findById(genreId)
+                .orElseThrow(() -> new EntityNotFoundException("Genre with id %d not found".formatted(genreId)));
+
+        return bookRepository.save(new Book(null, title, author, genre));
     }
 
     @Transactional
     @Override
     public Book update(long id, String title, long authorId, long genreId) {
 
-        Optional<Book> book = bookRepository.findById(id);
+        Book book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
+                "Book with id %d not found".formatted(id)
+        ));
 
-        Book newBook = save(id, title, authorId, genreId);
+        book.setTitle(title);
 
-        if (book.isPresent()) {
-            bookRepository.save(newBook);
-            return newBook;
-        }
-
-        newBook.setId(null);
-
-        return newBook;
+        return bookRepository.save(book);
     }
 
     @Transactional
@@ -69,12 +69,4 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    private Book save(long id, String title, long authorId, long genreId) {
-        var author = authorRepository.findById(authorId)
-                .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(authorId)));
-        var genre = genreRepository.findById(genreId)
-                .orElseThrow(() -> new EntityNotFoundException("Genre with id %d not found".formatted(genreId)));
-        var book = new Book(id, title, author, genre);
-        return bookRepository.save(book);
-    }
 }

@@ -23,8 +23,8 @@ import lombok.EqualsAndHashCode;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"title", "author", "genre"})
-@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,7 +36,6 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ToString.Include
     private Long id;
 
     @Column(name = "title", nullable = false)
