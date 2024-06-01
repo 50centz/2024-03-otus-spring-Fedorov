@@ -61,10 +61,9 @@ class BookServiceImplTest {
         if (actualBook.isPresent()) {
             Book book = actualBook.get();
 
-            assertThat(book)
+            assertThat(book).isNotNull().matches(b -> b.getId() > 0)
                     .usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(expectedBook);
         }
-
     }
 
 
@@ -79,6 +78,7 @@ class BookServiceImplTest {
         assertThat(actualBooks).containsExactlyElementsOf(expectedBooks);
 
         for (int i = 0; i < actualBooks.size(); i++) {
+
             Book bookActual = actualBooks.get(i);
             Book bookExpected = expectedBooks.get(i);
 
