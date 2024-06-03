@@ -20,7 +20,7 @@ public class CommentCommands {
 
     @ShellMethod(value = "Find all comments by book id", key = "acid")
     public String findAllCommentByBookId(long id) {
-        return commentService.findAllCommentByBookId(id).stream()
+        return commentService.findByBookId(id).stream()
                 .map(commentConverter::commentToString)
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
@@ -41,7 +41,7 @@ public class CommentCommands {
 
     @ShellMethod(value = "Update comment by id", key = "cupd")
     public void updateComment(long id, String comment) {
-        commentService.updateCommentById(id, comment);
+        commentService.update(id, comment);
     }
 
     @ShellMethod(value = "Delete comment by id", key = "cdel")

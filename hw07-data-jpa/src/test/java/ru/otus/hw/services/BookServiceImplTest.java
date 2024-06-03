@@ -56,7 +56,7 @@ class BookServiceImplTest {
     void shouldHaveReturnCorrectBookByIdWithMethod() {
         Book expectedBook = createBook();
 
-        var actualBook = bookServiceImpl.findById(1);
+        var actualBook = bookServiceImpl.findById(1L);
 
         if (actualBook.isPresent()) {
             Book book = actualBook.get();
@@ -93,7 +93,7 @@ class BookServiceImplTest {
 
         bookServiceImpl.create("BookTitle_4", 4, 4);
 
-        var actualBook = bookServiceImpl.findById(4);
+        var actualBook = bookServiceImpl.findById(4L);
         var expectedBook = createNewBook();
 
         assertThat(actualBook).isPresent().get().isEqualTo(expectedBook);
@@ -108,7 +108,7 @@ class BookServiceImplTest {
         authorServiceImpl.create("Author_4");
         genreServiceImpl.create("Genre_4");
 
-        var actualBook = bookServiceImpl.findById(1);
+        var actualBook = bookServiceImpl.findById(1L);
 
         Book expectedBook = new Book();
         expectedBook.setId(1L);
@@ -127,17 +127,17 @@ class BookServiceImplTest {
 
         commentServiceImpl.create("New Comment", 4);
 
-        var book = bookServiceImpl.findById(4);
+        var book = bookServiceImpl.findById(4L);
         assertThat(book).isPresent();
 
-        List<Comment> comment = commentServiceImpl.findAllCommentByBookId(4);
+        List<Comment> comment = commentServiceImpl.findByBookId(4);
         assertThat(comment).size().isEqualTo(1);
 
-        commentServiceImpl.deleteAllCommentByBookId(4);
+        commentServiceImpl.deleteByBookId(4);
         bookServiceImpl.deleteById(4);
 
-        var actualBook = bookServiceImpl.findById(4);
-        List<Comment> actualComment = commentServiceImpl.findAllCommentByBookId(4);
+        var actualBook = bookServiceImpl.findById(4L);
+        List<Comment> actualComment = commentServiceImpl.findByBookId(4);
 
         assertThat(actualBook).isEmpty();
         assertThat(actualComment).size().isEqualTo(0);

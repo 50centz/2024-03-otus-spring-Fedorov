@@ -21,7 +21,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Comment> findAllCommentByBookId(long id) {
+    public List<Comment> findByBookId(long id) {
         return commentRepository.findAllCommentByBookId(id);
     }
 
@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void updateCommentById(long id, String comment) {
+    public void update(long id, String comment) {
         Comment commentInDb = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment " +
                 "with id %d not found".formatted(id)));
 
@@ -54,13 +54,13 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void deleteById(long id) {
-        commentRepository.deleteCommentById(id);
+        commentRepository.deleteById(id);
     }
 
 
     @Transactional
     @Override
-    public void deleteAllCommentByBookId(long id) {
+    public void deleteByBookId(long id) {
         commentRepository.deleteAllCommentByBookId(id);
     }
 

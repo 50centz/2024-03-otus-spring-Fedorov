@@ -29,7 +29,7 @@ class CommentServiceImplTest {
     @DisplayName("CommentServiceImpl : Method(findAllCommentByBookId())")
     @Test
     void shouldHaveReturnListCommentByBookIdWithMethod() {
-        var actualComment = commentService.findAllCommentByBookId(1);
+        var actualComment = commentService.findByBookId(1);
         var expectedComment = createListComment();
 
         assertThat(actualComment).containsExactlyElementsOf(expectedComment);
@@ -59,7 +59,7 @@ class CommentServiceImplTest {
     @DisplayName("CommentServiceImpl : Method(updateCommentById())")
     @Test
     void updateCommentById() {
-        commentService.updateCommentById(4, "Update Comment");
+        commentService.update(4, "Update Comment");
 
         var actualComment = commentService.findById(4);
         var expectedComment = createCommentForUpdateTest();
