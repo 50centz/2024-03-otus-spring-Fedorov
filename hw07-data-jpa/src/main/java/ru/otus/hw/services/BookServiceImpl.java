@@ -7,6 +7,7 @@ import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
+import ru.otus.hw.repositories.CommentRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
@@ -21,10 +22,12 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    private final CommentRepository commentRepository;
+
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Book> findById(long id) {
+    public Optional<Book> findById(Long id) {
 
         return bookRepository.findById(id);
     }
@@ -46,7 +49,7 @@ public class BookServiceImpl implements BookService {
         var genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new EntityNotFoundException("Genre with id %d not found".formatted(genreId)));
 
-        return bookRepository.save(new Book(null, title, author, genre));
+        return bookRepository.save(new Book(0, title, author, genre));
     }
 
     @Transactional
@@ -57,10 +60,8 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(authorId)));
         var genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new EntityNotFoundException("Genre with id %d not found".formatted(genreId)));
-
         Book book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                "Book with id %d not found".formatted(id)
-        ));
+                "Book with id %d not found".formatted(id)));
 
         book.setTitle(title);
         book.setAuthor(author);
@@ -73,6 +74,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(long id) {
 
+        commentRepository.deleteAllByBookId(id);
         bookRepository.deleteById(id);
     }
 
