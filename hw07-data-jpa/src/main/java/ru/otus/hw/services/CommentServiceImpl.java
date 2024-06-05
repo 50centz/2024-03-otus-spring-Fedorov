@@ -58,12 +58,4 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
-    @Transactional
-    @Override
-    public void deleteByBookId(long id) {
-        commentRepository.deleteAllCommentByBookId(id);
-    }
-
-
-
 }

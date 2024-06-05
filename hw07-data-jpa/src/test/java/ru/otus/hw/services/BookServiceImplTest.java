@@ -133,7 +133,7 @@ class BookServiceImplTest {
         List<Comment> comment = commentServiceImpl.findByBookId(4);
         assertThat(comment).size().isEqualTo(1);
 
-        commentServiceImpl.deleteByBookId(4);
+
         bookServiceImpl.deleteById(4);
 
         var actualBook = bookServiceImpl.findById(4L);
