@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto create(String comment, String bookId) {
         var book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("Book with id %d not found".formatted(bookId)));
+                .orElseThrow(() -> new EntityNotFoundException("Book with id %s not found".formatted(bookId)));
 
         return commentMapper.toDto(commentRepository.save(new Comment(getId(), comment, book)));
     }
@@ -61,6 +61,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteById(String id) {
         commentRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllByBookId(String id) {
+        commentRepository.deleteAllByBookId(id);
     }
 
     private String getId() {

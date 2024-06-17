@@ -10,7 +10,6 @@ import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
-import ru.otus.hw.repositories.CommentRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
 
     private final BookRepository bookRepository;
-
-    private final CommentRepository commentRepository;
 
     private final BookMapper bookMapper;
 
@@ -60,7 +57,7 @@ public class BookServiceImpl implements BookService {
         var genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new EntityNotFoundException("Genre with id %s not found".formatted(genreId)));
 
-        return bookMapper.toDto(bookRepository.save(new Book(getId(), title, genre, authors)));
+        return bookMapper.toDto(bookRepository.save(new Book(null, title, genre, authors)));
     }
 
     @Transactional
@@ -89,20 +86,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(String id) {
 
-        commentRepository.deleteAllByBookId(id);
         bookRepository.deleteById(id);
     }
 
-    private String getId() {
-        Optional<Book> book = bookRepository.findAll().stream().reduce((b1, b2) -> b2);
-
-        if (book.isPresent()) {
-            String number = book.get().getId();
-            int i = Integer.parseInt(number);
-            i++;
-            return Integer.toString(i);
-        }
-
-        return "1";
-    }
 }

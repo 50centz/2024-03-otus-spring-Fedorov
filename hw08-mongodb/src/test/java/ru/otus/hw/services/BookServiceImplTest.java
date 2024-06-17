@@ -17,6 +17,7 @@ import ru.otus.hw.repositories.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,7 +78,9 @@ class BookServiceImplTest {
 
         bookService.create("New Book 4", "1", "1");
 
-        var actualBookDto = bookService.findById("4").get();
+        String bookId = getId();
+
+        var actualBookDto = bookService.findById(bookId).get();
         var expectedBook = createBookForInsertTest();
 
         assertThat(actualBookDto)
@@ -145,7 +148,15 @@ class BookServiceImplTest {
     }
 
     private BookDto createBookForInsertTest() {
-        return bookMapper.toDto(new Book("4", "New Book 4", dbGenres.get(0), List.of(dbAuthors.get(0))));
+
+        return bookMapper.toDto(new Book(getId(), "New Book 4", dbGenres.get(0), List.of(dbAuthors.get(0))));
     }
 
+    private String getId(){
+        Optional<Book> book = bookRepository.findAll().stream().reduce((b1, b2) -> b2);
+
+        return book.get().getId();
+
+
+    }
 }
