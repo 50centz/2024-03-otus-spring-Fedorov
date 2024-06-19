@@ -14,6 +14,7 @@ import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.BookRepository;
+import ru.otus.hw.repositories.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,9 @@ class BookServiceImplTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
 
     private List<Author> dbAuthors;
@@ -104,14 +108,19 @@ class BookServiceImplTest {
     @Test
     void shouldHaveDeleteBookByIdWithMethod() {
         var bookDto = bookService.findById("2");
+        var commentList = commentRepository.findAllByBookId("2");
 
         assertThat(bookDto).isPresent();
+        assertThat(commentList).isNotNull();
 
         bookService.deleteById("2");
+        commentRepository.deleteAllByBookId("2");
 
         var actualBookDto = bookRepository.findById("2");
+        var actualCommentList = commentRepository.findAllByBookId("2");
 
         assertThat(actualBookDto).isEmpty();
+        assertThat(actualCommentList).isEmpty();
     }
 
     private BookDto createBook() {
