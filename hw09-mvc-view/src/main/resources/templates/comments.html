@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+</head>
+<body>
+<h1>Library</h1>
+
+<h3>Book:</h3>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Genre</th>
+        <th>Authors</th>
+    </tr>
+    </thead>
+    <tbody>
+        <td th:text="${bookDto.id}">1</td>
+        <td th:text="*{bookDto.title}">John Doe</td>
+        <td th:text="*{bookDto.genreDto.name}">John Doe</td>
+        <td>
+            <span th:each="author : ${bookDto.authorsDto}">
+                <span th:utext="${author.fullName}" />
+            </span>
+        </td>
+    </tbody>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h3>Comments on the book:</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Comment</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        <tr th:each="comment : ${commentDtoList}" th:object="${comment}">
+            <td th:text="*{id}">1</td>
+            <td th:text="*{comment}">John Doe</td>
+            <td>
+                <a th:href="@{/comment/delete(id=*{id})}">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
