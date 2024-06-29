@@ -5,3 +5,6 @@
 *.log
 
 target/
+
+
+mvnw.*

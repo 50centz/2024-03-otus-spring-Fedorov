@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Library</h1>
+<h3>Add a comment:</h3>
+<form action="#" th:action="@{/comment-create}" method="post">
+
+    <label for="book">Book: </label>
+    <select id="book" name="bookId" >
+        <option th:each="book : ${bookDtoList}" th:value="${book.id}" th:text="${book.title}"></option>
+    </select> <br>
+
+    <label for="comment">Comment</label>
+    <input type="text" th:value="${comment}" name="comment" id="comment" placeholder="Comment"> <br>
+    <input type="submit" value="Create Comment">
+</form>
+</body>
+</html>
