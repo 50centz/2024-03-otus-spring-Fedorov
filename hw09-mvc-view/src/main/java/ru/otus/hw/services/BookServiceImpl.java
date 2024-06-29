@@ -3,9 +3,11 @@ package ru.otus.hw.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.hw.dto.BookCreateDto;
 import ru.otus.hw.dto.BookDto;
+import ru.otus.hw.dto.BookUpdateDto;
 import ru.otus.hw.dto.mapper.BookMapper;
-import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
@@ -14,7 +16,6 @@ import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +34,7 @@ public class BookServiceImpl implements BookService {
     public BookDto findById(String id) {
 
         return bookMapper.toDto(bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Book with id %s not found".formatted(id))));
+                .orElseThrow(() -> new NotFoundException("Book with id %s not found".formatted(id))));
     }
 
     @Transactional(readOnly = true)
@@ -46,36 +47,40 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public BookDto create(String title, String genreId, String... authorId) {
+    public BookDto create(BookCreateDto bookCreateDto) {
 
         List<Author> authors = new ArrayList<>();
 
-        for (String author : authorId) {
+        String genreId = bookCreateDto.getGenre();
+
+        for (String author : bookCreateDto.getAuthor()) {
             authors.add(authorRepository.findById(author)
-                    .orElseThrow(() -> new EntityNotFoundException("Author with id %s not found".formatted(author))));
+                    .orElseThrow(() -> new NotFoundException("Author with id %s not found".formatted(author))));
         }
         var genre = genreRepository.findById(genreId)
-                .orElseThrow(() -> new EntityNotFoundException("Genre with id %s not found".formatted(genreId)));
+                .orElseThrow(() -> new NotFoundException("Genre with id %s not found".formatted(genreId)));
 
-        return bookMapper.toDto(bookRepository.save(new Book(getId(), title, genre, authors)));
+        return bookMapper.toDto(bookRepository.save(new Book(null, bookCreateDto.getTitle(), genre, authors)));
     }
 
     @Transactional
     @Override
-    public BookDto update(String id, String title, String genreId, String... authorId) {
+    public BookDto update(BookUpdateDto bookUpdateDto) {
 
         List<Author> authors = new ArrayList<>();
 
-        for (String author : authorId) {
-            authors.add(authorRepository.findById(author)
-                    .orElseThrow(() -> new EntityNotFoundException("Author with id %s not found".formatted(author))));
-        }
-        var genre = genreRepository.findById(genreId)
-                .orElseThrow(() -> new EntityNotFoundException("Genre with id %s not found".formatted(genreId)));
-        Book book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                "Book with id %s not found".formatted(id)));
+        String genreID = bookUpdateDto.getGenre();
 
-        book.setTitle(title);
+        for (String author : bookUpdateDto.getAuthor()) {
+            authors.add(authorRepository.findById(author)
+                    .orElseThrow(() -> new NotFoundException("Author with id %s not found".formatted(author))));
+        }
+        var genre = genreRepository.findById(genreID)
+                .orElseThrow(() -> new NotFoundException("Genre with id %s not found".formatted(genreID)));
+        Book book = bookRepository.findById(bookUpdateDto.getBookId()).orElseThrow(() -> new NotFoundException(
+                "Book with id %s not found".formatted(bookUpdateDto.getBookId())));
+
+        book.setTitle(bookUpdateDto.getTitle());
         book.setGenre(genre);
         book.setAuthors(authors);
 
@@ -87,19 +92,6 @@ public class BookServiceImpl implements BookService {
     public void deleteById(String id) {
 
         bookRepository.deleteById(id);
-    }
-
-    private String getId() {
-        Optional<Book> book = bookRepository.findAll().stream().reduce((b1, b2) -> b2);
-
-        if (book.isPresent()) {
-            String number = book.get().getId();
-            int i = Integer.parseInt(number);
-            i++;
-            return Integer.toString(i);
-        }
-
-        return "1";
     }
 
 }

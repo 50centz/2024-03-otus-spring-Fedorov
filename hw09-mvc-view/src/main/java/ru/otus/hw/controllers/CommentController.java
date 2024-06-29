@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.hw.dto.BookDto;
@@ -22,28 +23,26 @@ public class CommentController {
 
     private final BookService bookService;
 
-    @GetMapping("/comments")
-    public String comments(@RequestParam("id") long id, Model model) {
-        String idComment = String.valueOf(id);
-        List<CommentDto> commentDtoList = commentService.findAllByBookId(idComment);
-        BookDto bookDto = bookService.findById(idComment);
+    @GetMapping("/comments/{id}")
+    public String comments(@PathVariable("id") String id, Model model) {
+        List<CommentDto> commentDtoList = commentService.findAllByBookId(id);
+        BookDto bookDto = bookService.findById(id);
         model.addAttribute("commentDtoList", commentDtoList);
         model.addAttribute("bookDto", bookDto);
         return "comments";
     }
 
-    @GetMapping("/comment/delete")
-    public String deleteById(@RequestParam("id") long id) {
-        String idDel = Long.toString(id);
+    @PostMapping("/comment/delete/{id}")
+    public String deleteById(@PathVariable("id") String id) {
         String idBook = "";
-        Optional<CommentDto> commentDto = commentService.findById(idDel);
+        Optional<CommentDto> commentDto = commentService.findById(id);
         if (commentDto.isPresent()) {
             idBook = commentDto.get().getBookDto().getId();
         }
         
-        commentService.deleteById(idDel);
+        commentService.deleteById(id);
 
-        return "redirect:/comments?id=" + idBook;
+        return "redirect:/comments/" + idBook;
     }
 
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class AuthorMapper {
 
     public AuthorDto toDto(Author author) {
-        return new AuthorDto(author.getId(), author.getFullName());
+        return new AuthorDto(author.getId().toString(), author.getFullName());
     }
 
     public List<AuthorDto> toDtoList(List<Author> authors) {

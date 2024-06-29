@@ -9,7 +9,6 @@ import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,19 +26,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public GenreDto create(String name) {
-        return genreMapper.toDto(genreRepository.save(new Genre(getId(), name)));
+        return genreMapper.toDto(genreRepository.save(new Genre(null, name)));
     }
 
-    private String getId() {
-        Optional<Genre> genre = genreRepository.findAll().stream().reduce((b1, b2) -> b2);
-
-        if (genre.isPresent()) {
-            String number = genre.get().getId();
-            int i = Integer.parseInt(number);
-            i++;
-            return Integer.toString(i);
-        }
-
-        return "1";
-    }
 }

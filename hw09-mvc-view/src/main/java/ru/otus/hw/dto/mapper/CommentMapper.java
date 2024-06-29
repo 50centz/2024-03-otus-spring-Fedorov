@@ -12,7 +12,7 @@ public class CommentMapper {
     private final BookMapper bookMapper;
 
     public CommentDto toDto(Comment comment) {
-        return new CommentDto(comment.getId(), comment.getComment(), bookMapper.toDto(comment.getBook()));
+        return new CommentDto(comment.getId().toString(), comment.getComment(), bookMapper.toDto(comment.getBook()));
     }
 
 }

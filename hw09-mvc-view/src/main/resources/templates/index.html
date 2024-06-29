@@ -36,13 +36,15 @@
             </span>
         </td>
         <td>
-            <a href="comments.html" th:href="@{/comments(id=*{id})}">Comments</a>
+            <a href="comments.html" th:href="@{/comments/{id}(id=*{id})}">Comments</a>
         </td>
         <td>
-            <a href="edit.html" th:href="@{/edit(id=*{id})}">Edit</a>
+            <a href="edit.html" th:href="@{/edit/{id}(id=*{id})}">Edit</a>
         </td>
         <td>
-            <a th:href="@{/book/delete(id=*{id})}">Delete</a>
+            <form action="#" th:action="@{/book/delete/{id}(id=*{id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>

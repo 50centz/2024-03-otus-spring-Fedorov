@@ -74,7 +74,7 @@ class BookControllerTest {
     @DisplayName("BookController : Method(deleteById())")
     @Test
     void shouldHaveDeleteByIdWithMethod() throws Exception {
-        mvc.perform(get("/book/delete").param("id", "1"))
+        mvc.perform(post("/book/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
     }
@@ -112,8 +112,7 @@ class BookControllerTest {
         given(bookService.findById("1")).willReturn(bookDto);
 
 
-        mvc.perform(get("/edit")
-                        .param("id", "1"))
+        mvc.perform(get("/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit"))
                 .andExpect(model().attribute("bookDto", bookDto))

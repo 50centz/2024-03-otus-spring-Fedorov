@@ -52,7 +52,8 @@ class CommentControllerTest {
         authorDtoList = getDbAuthorsDto();
         bookDtoList = getDbBooksDto();
         commentDtoList = getDbCommentsDto();
-        bookDto = new BookDto("1", "BookTitle_1", genreDtoList.get(0), authorDtoList.stream().limit(1).toList());
+        bookDto = new BookDto("1", "BookTitle_1", genreDtoList.get(0),
+                authorDtoList.stream().limit(1).toList());
 
     }
 
@@ -62,7 +63,7 @@ class CommentControllerTest {
         given(commentService.findAllByBookId("1")).willReturn(commentDtoList);
         given(bookService.findById("1")).willReturn(bookDto);
 
-        mvc.perform(get("/comments").param("id", "1"))
+        mvc.perform(get("/comments/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("comments"))
                 .andExpect(model().attribute("commentDtoList", commentDtoList))
@@ -72,9 +73,9 @@ class CommentControllerTest {
     @DisplayName("CommentController : Method(deleteById())")
     @Test
     void shouldHaveDeleteByIdWithMethod() throws Exception {
-        mvc.perform(get("/comment/delete").param("id", "1"))
+        mvc.perform(post("/comment/delete/1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/comments?id="));
+                .andExpect(view().name("redirect:/comments/"));
     }
 
     @DisplayName("CommentController : Method(commentSave())")

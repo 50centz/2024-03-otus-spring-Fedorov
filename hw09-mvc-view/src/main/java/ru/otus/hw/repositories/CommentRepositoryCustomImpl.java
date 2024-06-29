@@ -2,6 +2,7 @@ package ru.otus.hw.repositories;
 
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,14 +19,14 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     @Override
     public void deleteAllByBookId(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("book.$id").is(id));
+        query.addCriteria(Criteria.where("book.$id").is(new ObjectId(id)));
         mongoTemplate.findAllAndRemove(query, Comment.class);
     }
 
     @Override
     public List<Comment> findAllByBookId(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("book.$id").is(id));
+        query.addCriteria(Criteria.where("book.$id").is(new ObjectId(id)));
         return mongoTemplate.find(query, Comment.class);
     }
 }

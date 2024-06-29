@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.dto.CommentDto;
 import ru.otus.hw.dto.mapper.CommentMapper;
-import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.CommentRepository;
@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Optional<CommentDto> findById(String id) {
         return Optional.of(commentMapper.toDto(commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment with id %s not found".formatted(id)))));
+                .orElseThrow(() -> new NotFoundException("Comment with id %s not found".formatted(id)))));
 
     }
 
@@ -41,15 +41,15 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto create(String comment, String bookId) {
         var book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("Book with id %s not found".formatted(bookId)));
+                .orElseThrow(() -> new NotFoundException("Book with id %s not found".formatted(bookId)));
 
-        return commentMapper.toDto(commentRepository.save(new Comment(getId(), comment, book)));
+        return commentMapper.toDto(commentRepository.save(new Comment(null, comment, book)));
     }
 
     @Transactional
     @Override
     public void update(String id, String comment) {
-        Comment commentInDb = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment " +
+        Comment commentInDb = commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment " +
                 "with id %s not found".formatted(id)));
 
         commentInDb.setComment(comment);
@@ -67,19 +67,5 @@ public class CommentServiceImpl implements CommentService {
     public void deleteAllByBookId(String id) {
         commentRepository.deleteAllByBookId(id);
     }
-
-    private String getId() {
-        Optional<Comment> comment = commentRepository.findAll().stream().reduce((b1, b2) -> b2);
-
-        if (comment.isPresent()) {
-            String number = comment.get().getId();
-            int i = Integer.parseInt(number);
-            i++;
-            return Integer.toString(i);
-        }
-
-        return "1";
-    }
-
 
 }

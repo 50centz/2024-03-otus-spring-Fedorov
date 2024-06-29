@@ -20,7 +20,7 @@ public class BookMapper {
 
         List<AuthorDto> authorDtoList = authorMapper.toDtoList(book.getAuthors());
 
-        return new BookDto(book.getId(), book.getTitle(), genreMapper.toDto(book.getGenre()), authorDtoList);
+        return new BookDto(book.getId().toString(), book.getTitle(), genreMapper.toDto(book.getGenre()), authorDtoList);
     }
 
 }

@@ -9,9 +9,11 @@
 <body>
 <h1>Library</h1>
 <h3>Add a book:</h3>
-<form action="#" th:action="@{/book-create}" method="post">
+<form action="#" th:action="@{/book-create}" method="post" th:object="${bookCreateDto}">
+
     <label for="title">Title: </label>
     <input type="text" th:value="${title}" name="title" id="title" placeholder="Title"> <br>
+    <p style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Invalid Title</p>
 
     <label for="genre">Genre: </label>
     <select id="genre" name="genre" >

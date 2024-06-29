@@ -55,7 +55,10 @@
             <td th:text="*{id}">1</td>
             <td th:text="*{comment}">John Doe</td>
             <td>
-                <a th:href="@{/comment/delete(id=*{id})}">Delete</a>
+<!--                <a th:href="@{/comment/delete(id=*{id})}">Delete</a>-->
+                <form action="#" th:action="@{/comment/delete/{id}(id=*{id})}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
             </td>
         </tr>
     </tbody>
