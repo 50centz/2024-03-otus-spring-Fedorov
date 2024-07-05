@@ -10,7 +10,8 @@ public class Application {
 
 		SpringApplication.run(Application.class, args);
 
-		System.out.println("Server up");
+		System.out.println("Server up\n");
+		System.out.println("http://localhost:8888");
 	}
 
 }
