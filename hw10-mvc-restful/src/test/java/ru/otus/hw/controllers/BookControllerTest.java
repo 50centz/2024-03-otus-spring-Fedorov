@@ -86,9 +86,11 @@ class BookControllerTest {
         mvc.perform(post("/api/books/create").contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(bookCreateDto)))
                 .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title").value("New Book"))
+                .andExpect(jsonPath("$.authorsDto.[0].id").value("1"))
+                .andExpect(jsonPath("$.authorsDto.[0].fullName").value("Author_1"))
                 .andDo(print());
-//                .andExpect(jsonPath("$.title").value("New Book"));
     }
 
     @DisplayName("BookController : Method(update())")
@@ -104,9 +106,12 @@ class BookControllerTest {
         mvc.perform(post("/api/books/edit").contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(bookUpdateDto)))
                 .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title").value("New Book"))
+                .andExpect(jsonPath("$.genreDto.id").value("1"))
+                .andExpect(jsonPath("$.genreDto.name").value("New Genre"))
                 .andDo(print());
-//                .andExpect(jsonPath("$.title").value("New Book"));
+
     }
 
 
