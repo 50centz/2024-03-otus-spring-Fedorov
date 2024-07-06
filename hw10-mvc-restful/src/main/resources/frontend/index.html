@@ -11,18 +11,13 @@
           .then((response) => response.json())
           .then((json) => {
             let li = "";
-            let entity = "";
             json.forEach((book) => {
-              entity = "delete" + book.id;
               li += `<tr>
-                                <td>${book.id}</td>
-                                <td>${book.title} </td>
-                                <td>${book.genreDto.name}</td>
-                                <td>${book.authorsDto[0].fullName}</td>
-                                <td><form action="#" th:action="@{/book/delete/{id}(id=${book.id})}" method="delete">
-                <button type="submit">Delete</button>
-            </form></td>
-                               </tr>`;
+                <td>${book.id}</td>
+                <td>${book.title} </td>
+                <td>${book.genreDto.name}</td>
+                <td>${book.authorsDto[0].fullName}</td>
+                </tr>`;
             });
             document.getElementById("table-body").innerHTML = li;
           });
