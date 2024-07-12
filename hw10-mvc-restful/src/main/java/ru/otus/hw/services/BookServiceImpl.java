@@ -14,7 +14,6 @@ import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,8 +27,9 @@ public class BookServiceImpl implements BookService {
 
     private final BookMapper bookMapper;
 
+    private final CheckingResponseFromDb checkingResponseFromDb;
 
-    @Transactional(readOnly = true)
+
     @Override
     public BookDto findById(String id) {
 
@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new NotFoundException("Book with id %s not found".formatted(id))));
     }
 
-    @Transactional(readOnly = true)
+
     @Override
     public List<BookDto> findAll() {
 
@@ -49,14 +49,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto create(BookCreateDto bookCreateDto) {
 
-        List<Author> authors = new ArrayList<>();
-
         String genreId = bookCreateDto.getGenreId();
 
-        for (String author : bookCreateDto.getAuthorIds()) {
-            authors.add(authorRepository.findById(author)
-                    .orElseThrow(() -> new NotFoundException("Author with id %s not found".formatted(author))));
-        }
+        List<Author> authors = authorRepository.findAllById(bookCreateDto.getAuthorIds());
+
+        checkingResponseFromDb.isEmpty(authors, bookCreateDto.getAuthorIds());
+        checkingResponseFromDb.checkAuthors(authors, bookCreateDto.getAuthorIds());
+
         var genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new NotFoundException("Genre with id %s not found".formatted(genreId)));
 
@@ -67,22 +66,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto update(BookUpdateDto bookUpdateDto) {
 
-        List<Author> authors = new ArrayList<>();
-
         String genreID = bookUpdateDto.getGenreId();
 
-        for (String author : bookUpdateDto.getAuthorIds()) {
-            authors.add(authorRepository.findById(author)
-                    .orElseThrow(() -> new NotFoundException("Author with id %s not found".formatted(author))));
-        }
+        List<Author> authors = authorRepository.findAllById(bookUpdateDto.getAuthorIds());
+
+        checkingResponseFromDb.isEmpty(authors, bookUpdateDto.getAuthorIds());
+        checkingResponseFromDb.checkAuthors(authors, bookUpdateDto.getAuthorIds());
+
         var genre = genreRepository.findById(genreID)
                 .orElseThrow(() -> new NotFoundException("Genre with id %s not found".formatted(genreID)));
-        Book book = bookRepository.findById(bookUpdateDto.getBookId()).orElseThrow(() -> new NotFoundException(
-                "Book with id %s not found".formatted(bookUpdateDto.getBookId())));
 
-        book.setTitle(bookUpdateDto.getTitle());
-        book.setGenre(genre);
-        book.setAuthors(authors);
+        Book book = bookMapper.toModel(bookUpdateDto, genre, authors);
 
         return bookMapper.toDto(bookRepository.save(book));
     }
@@ -90,9 +84,6 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void deleteById(String id) {
-        bookRepository.findById(id).orElseThrow(() -> new NotFoundException("The book with this id: %s is not in the DB"
-                        .formatted(id)));
-
         bookRepository.deleteById(id);
     }
 

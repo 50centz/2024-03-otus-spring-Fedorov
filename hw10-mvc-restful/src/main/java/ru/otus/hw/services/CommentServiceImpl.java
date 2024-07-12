@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
 
-    @Transactional(readOnly = true)
+
     @Override
     public List<CommentDto> findAllByBookId(String id) {
 
@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllByBookId(id).stream().map(commentMapper::toDto).toList();
     }
 
-    @Transactional(readOnly = true)
+
     @Override
     public Optional<CommentDto> findById(String id) {
         return Optional.of(commentMapper.toDto(commentRepository.findById(id)

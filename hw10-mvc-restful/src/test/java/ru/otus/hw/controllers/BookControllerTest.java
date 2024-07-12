@@ -14,6 +14,7 @@ import ru.otus.hw.dto.BookCreateDto;
 import ru.otus.hw.dto.BookDto;
 import ru.otus.hw.dto.BookUpdateDto;
 import ru.otus.hw.dto.GenreDto;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.services.BookService;
 
 import java.util.List;
@@ -72,7 +73,7 @@ class BookControllerTest {
     @Test
     void shouldHaveDeleteByIdWithMethod() throws Exception {
         mvc.perform(delete("/api/books/delete/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @DisplayName("BookController : Method(save())")
@@ -85,7 +86,7 @@ class BookControllerTest {
 
         mvc.perform(post("/api/books/create").contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(bookCreateDto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title").value("New Book"))
                 .andExpect(jsonPath("$.authorsDto.[0].id").value("1"))
@@ -118,11 +119,12 @@ class BookControllerTest {
     @DisplayName("Exception 404")
     @Test
     void shouldHaveException404WithMethod() throws Exception {
-        String exceptionParam = "404";
 
-        mvc.perform(get("/api/books/exception/{exceptionId}", exceptionParam)
-                        .contentType(MediaType.APPLICATION_JSON))
+//        given(bookService.findAll()).willThrow(new NotFoundException("Not Found Exception 404"));
+
+        mvc.perform(get("/api/books/exception"))
                 .andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$.errorMessage").value("Not Found Exception 404"))
                 .andDo(print());
 
     }
@@ -130,11 +132,11 @@ class BookControllerTest {
     @DisplayName("Exception 500")
     @Test
     void shouldHaveException500WithMethod() throws Exception {
-        String exceptionParam = "500";
+        given(bookService.findAll()).willThrow(new RuntimeException("Exception 500"));
 
-        mvc.perform(get("/api/books/exception/{exceptionId}", exceptionParam)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/books"))
                 .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorMessage").value("Exception 500"))
                 .andDo(print());
     }
 

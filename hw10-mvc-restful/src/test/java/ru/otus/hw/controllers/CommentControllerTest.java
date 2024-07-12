@@ -73,7 +73,7 @@ class CommentControllerTest {
     @Test
     void shouldHaveDeleteByIdWithMethod() throws Exception {
         mvc.perform(delete("/api/comments/delete/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @DisplayName("CommentController : Method(commentSave())")
