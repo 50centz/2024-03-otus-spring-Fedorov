@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+
+    <script>
+      function getDataByFetch() {
+        fetch("http://localhost:8888/api/books")
+          .then((response) => response.json())
+          .then((json) => {
+            let li = "";
+            json.forEach((book) => {
+              li += `<tr>
+                <td>${book.id}</td>
+                <td>${book.title} </td>
+                <td>${book.genreDto.name}</td>
+                <td>${book.authorsDto[0].fullName}</td>
+                </tr>`;
+            });
+            document.getElementById("table-body").innerHTML = li;
+          });
+      }
+    </script>
+    <style>
+      h1 {
+        text-align: center;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      table tr td,
+      th {
+        padding: 5px;
+        border: 1px solid steelblue;
+      }
+    </style>
+  </head>
+  <body>
+    <button style="width: 400px" onclick="getDataByFetch()">
+      Получить все книги из библиотеки с помощью Fetch</button
+    ><br /><br />
+
+    <h1>Books:</h1>
+
+    <table id="table-head">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Genre</th>
+          <th>Authors</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </body>
+</html>
