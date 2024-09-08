@@ -23,5 +23,6 @@
         <module>hw10-mvc-restful</module>
         <module>hw12-authentication</module>
         <module>hw13-acl</module>
+        <module>hw17-docker</module>
     </modules>
 </project>
