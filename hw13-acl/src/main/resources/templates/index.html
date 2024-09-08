@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<p><a href="/login">Login</a></p>
+<p><a href="/registration">Registration</a></p>
+
+<h1>Library</h1>
+<p><a href="/book-create">Add a book</a></p>
+<p><a href="/author-create">Add an author</a></p>
+<p><a href="/genre-create">Add a genre</a></p>
+<p><a href="/comment-create">Add a comment</a></p>
+<p><a href="/users">Users</a></p>
+<h3>Books:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Authors</th>
+            <th>Comments</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${bookDtoList}" th:object="${book}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{title}">John Doe</td>
+        <td th:text="*{genreDto.name}">John Doe</td>
+        <td th:text="*{authorDto.fullName}">John Doe</td>
+        <td>
+            <a href="comments.html" th:href="@{/comments/{id}(id=*{id})}">Comments</a>
+        </td>
+        <td>
+            <a href="edit.html" th:href="@{/edit/{id}(id=*{id})}">Edit</a>
+        </td>
+        <td>
+            <form action="#" th:action="@{/book/delete/{id}(id=*{id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

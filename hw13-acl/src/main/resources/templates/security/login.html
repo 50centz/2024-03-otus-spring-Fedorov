@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Login</h1>
+<!--<form action="#" th:action="@{/login}" method="post" th:object="${userLoginDto}">-->
+
+<!--    <label for="username">Username: </label>-->
+<!--    <input type="text" th:value="${username}" name="username" id="username" placeholder="Username"> <br>-->
+<!--    <p style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Username</p>-->
+
+<!--    <label for="password">Password: </label>-->
+<!--    <input type="password" th:value="${password}" name="password" id="password" placeholder="Password"> <br>-->
+<!--    <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid Password</p> <br>-->
+
+
+<!--    <input type="submit" value="Login">-->
+
+<!--</form>-->
+
+<form method="POST" action="/perform_login">
+    <div class="form-row">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter username"/>
+    </div>
+    <div class="form-row">
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" placeholder="Enter password"/>
+    </div>
+    <div class="error-message" th:if="${param.error}">
+        Invalid username or password
+    </div>
+
+    <div>
+        <input type="submit" value="Login"/>
+    </div>
+</form>
+
+
+</body>
+</html>
