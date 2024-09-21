@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Library</h1>
+<h3>Add a book:</h3>
+<form action="#" th:action="@{/book-create}" method="post">
+    <label for="title">Title: </label>
+    <input type="text" th:value="${title}" name="title" id="title" placeholder="Title"> <br>
+
+    <label for="genre">Genre: </label>
+    <select id="genre" name="genre" >
+        <option th:each="genre : ${genreDtoList}" th:value="${genre.id}" th:text="${genre.name}"></option>
+    </select> <br>
+
+    <label for="author">Author: </label>
+    <select id="author" name="author" >
+        <option th:each="author : ${authorDtoList}" th:value="${author.id}" th:text="${author.fullName}"></option>
+    </select> <br>
+    <input type="submit" value="Create Book">
+
+</form>
+</body>
+</html>

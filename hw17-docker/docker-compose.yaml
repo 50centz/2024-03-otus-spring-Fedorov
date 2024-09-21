@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  library-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:8888"
+    # Эти свойства перегружают соответствующие в application.yml
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:admin@library-db:27017
+      - SPRING_DATA_MONGODB_USERNAME=admin
+      - SPRING_DATA_MONGODB_PASSWORD=admin
+      - SPRING_DATA_MONGODB_DATABASE=lib
+    depends_on:
+      - mongodb
+
+  library-db:
+    image: "mongo:7.0.9"
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=lib
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin

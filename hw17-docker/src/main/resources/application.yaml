@@ -1,0 +1,37 @@
+spring:
+  data:
+    mongodb:
+#      uri: mongodb://admin:admin@192.168.22.88:27017
+#      username: admin
+#      password: admin
+#      database: lib
+      port: 0
+      database: lib
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "ApplicationRunner" # default
+  #runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.hw.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+server:
+  port: 8888
+
+logging:
+  level:
+    root: ERROR
