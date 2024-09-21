@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Registration</h1>
+<h3>Create an account:</h3>
+<form action="#" th:action="@{/registration}" method="post" th:object="${userCreateDto}">
+
+    <label for="username">Username: </label>
+    <input type="text" th:value="${username}" name="username" id="username" placeholder="Username"> <br>
+    <p style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Username</p>
+
+    <label for="password">Password: </label>
+    <input type="password" th:value="${password}" name="password" id="password" placeholder="Password"> <br>
+    <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid Password</p> <br>
+
+
+    <input type="submit" value="Create account">
+
+</form>
+
+</body>
+</html>
